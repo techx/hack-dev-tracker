@@ -6,6 +6,7 @@ const ProjectsList = () => {
   const [showAddTask, setShowAddTask] = useState(false);
   const [newTaskName, setNewTaskName] = useState('');
   const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [selectedGoalId, setSelectedGoalId] = useState(null); // Added state to track selected goal ID
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -20,20 +21,22 @@ const ProjectsList = () => {
     fetchProjects();
   }, []);
 
-  const handleAddTaskClick = (projectId) => {
+  const handleAddTaskClick = (projectId, goalId) => { // Modified to accept goalId
     setSelectedProjectId(projectId);
+    setSelectedGoalId(goalId); // Set the selected goal ID
     setShowAddTask(true);
   };
 
   const handleAddTaskSubmit = async () => {
     try {
-      const response = await axios.post(`https://b4ab214f2633.ngrok.app/projects/${selectedProjectId}/tasks`, {
+      const response = await axios.post(`https://b4ab214f2633.ngrok.app/projects/${selectedProjectId}/goals/${selectedGoalId}/tasks`, { // Modified URL to include goalId
         name: newTaskName,
       });
       // Refresh the projects list to show the new task
       const updatedProjects = [...projects];
       const projectIndex = updatedProjects.findIndex(project => project.id === selectedProjectId);
-      updatedProjects[projectIndex].tasks.push(response.data);
+      const goalIndex = updatedProjects[projectIndex].goals.findIndex(goal => goal.id === selectedGoalId); // Find the index of the goal
+      updatedProjects[projectIndex].goals[goalIndex].tasks.push(response.data); // Push the new task to the correct goal
       setProjects(updatedProjects);
       // Reset the form and hide it
       setNewTaskName('');
@@ -50,18 +53,23 @@ const ProjectsList = () => {
         {projects.map((project) => (
           <li key={project.id}>
             {project.name}
-            <button onClick={() => handleAddTaskClick(project.id)}>Add Task</button>
-            {showAddTask && selectedProjectId === project.id && (
-              <div>
-                <input
-                  type="text"
-                  value={newTaskName}
-                  onChange={(e) => setNewTaskName(e.target.value)}
-                  placeholder="Task Name"
-                />
-                <button onClick={handleAddTaskSubmit}>Submit</button>
+            {project.goals.map((goal) => ( // Render each goal with an Add Task button
+              <div key={goal.id}>
+                {goal.name}
+                <button onClick={() => handleAddTaskClick(project.id, goal.id)}>Add Task</button> // Pass goal.id to the click handler
+                {showAddTask && selectedProjectId === project.id && selectedGoalId === goal.id && ( // Check if the selected goal matches
+                  <div>
+                    <input
+                      type="text"
+                      value={newTaskName}
+                      onChange={(e) => setNewTaskName(e.target.value)}
+                      placeholder="Task Name"
+                    />
+                    <button onClick={handleAddTaskSubmit}>Submit</button>
+                  </div>
+                )}
               </div>
-            )}
+            ))}
           </li>
         ))}
       </ul>
