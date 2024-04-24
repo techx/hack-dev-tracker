@@ -29,6 +29,9 @@ const OverallProgress = () => {
     fetchProjects();
   }, []);
 
+  // Additional log to inspect the projects state before rendering
+  console.log('Projects state before rendering:', projects);
+
   return (
     <div>
       <h2>Overall Project Progress</h2>
