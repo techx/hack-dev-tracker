@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { TextInput, Button, Textarea, Progress, Box, Group } from '@mantine/core';
+import { TextInput, Button, Textarea, Progress, Box, Group, Select } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import axios from 'axios';
 import confetti from 'canvas-confetti';
@@ -14,6 +14,7 @@ const ProjectPage = () => {
       taskDescription: '',
       assignee: '',
       githubPR: '',
+      goalId: '',
     },
   });
 
@@ -82,6 +83,12 @@ const ProjectPage = () => {
       <section>
         <h2>Add New Task</h2>
         <form onSubmit={form.onSubmit((values) => submitTask(values))}>
+          <Select
+            label="Goal"
+            placeholder="Select a goal"
+            data={project.goals.map((goal) => ({ value: goal.id.toString(), label: goal.name }))}
+            {...form.getInputProps('goalId')}
+          />
           <TextInput
             placeholder="Task Name"
             {...form.getInputProps('taskName')}
