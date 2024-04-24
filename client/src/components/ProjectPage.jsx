@@ -18,7 +18,7 @@ const ProjectPage = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`https://b4ab214f2633.ngrok.app/projects/${id}`);
+        const response = await axios.get(`http://127.0.0.1:5000/projects/${id}`);
         setProject(response.data);
       } catch (error) {
         console.error('Error fetching project details:', error);
