@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from '@mantine/form';
+import axios from 'axios';
 
 const ProjectPage = () => {
   let { id } = useParams();
+  const [project, setProject] = useState(null);
   const form = useForm({
     initialValues: {
       taskName: '',
@@ -13,21 +15,36 @@ const ProjectPage = () => {
     },
   });
 
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const response = await axios.get(`https://b4ab214f2633.ngrok.app/projects/${id}`);
+        setProject(response.data);
+      } catch (error) {
+        console.error('Error fetching project details:', error);
+      }
+    };
+
+    fetchProject();
+  }, [id]);
+
   const submitTask = (values) => {
     // Placeholder for submitting the task to the backend
     console.log(values);
   };
 
+  if (!project) {
+    return <div>Loading project details...</div>;
+  }
+
   return (
     <div>
       <h1>Project Details</h1>
       <p>This is the page for project with ID: {id}</p>
-      {/* Placeholder for project progress bar */}
       <section>
         <h2>Project Progress</h2>
-        {/* Placeholder for progress bar */}
+        {/* Render project progress bar here */}
       </section>
-      {/* Form for adding new tasks */}
       <section>
         <h2>Add New Task</h2>
         <form onSubmit={form.onSubmit((values) => submitTask(values))}>
@@ -53,20 +70,29 @@ const ProjectPage = () => {
           <button type="submit">Add Task</button>
         </form>
       </section>
-      {/* Placeholder for project goals and tasks */}
       <section>
         <h2>Project Goals</h2>
-        {/* Placeholder for goals and tasks list */}
+        <ul>
+          {project.goals.map((goal) => (
+            <li key={goal.id}>
+              {goal.name}
+              {/* Render goal progress bar here */}
+              <ul>
+                {goal.tasks.map((task) => (
+                  <li key={task.id}>{task.name}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
       </section>
-      {/* Placeholder for GitHub PR and issue link attachments */}
       <section>
         <h2>GitHub Links</h2>
-        {/* Placeholder for GitHub links */}
+        {/* Render GitHub links here */}
       </section>
-      {/* Placeholder for team member assignment */}
       <section>
         <h2>Team Members</h2>
-        {/* Placeholder for team member assignment */}
+        {/* Render team members here */}
       </section>
     </div>
   );
