@@ -68,6 +68,11 @@ const ProjectsList = () => {
                     <button onClick={handleAddTaskSubmit}>Submit</button>
                   </div>
                 )}
+                <ul>
+                  {goal.tasks.map((task) => (
+                    <li key={task.id}>{task.name}</li>
+                  ))}
+                </ul>
               </div>
             ))}
           </li>
