@@ -7,22 +7,27 @@ const OverallProgress = () => {
 
   useEffect(() => {
     console.log('Initial projects state:', projects); // Log initial state
-    const fetchProjects = async () => {
-      try {
-        console.log('Fetching projects data from backend');
-        const response = await fetch(`${API_URL}/projects`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log('Data received from backend:', data);
-        // Additional log to inspect the structure of the received data
-        console.log('Inspecting data structure:', JSON.stringify(data, null, 2));
-        setProjects(data);
-        console.log('Projects state after setting data:', projects); // Log state after setting data
-      } catch (error) {
-        console.error("Could not fetch projects data:", error);
-      }
+    const fetchProjects = () => {
+      console.log('Fetching projects data from backend');
+      fetch(`${API_URL}/projects`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Data received from backend:', data);
+          // Additional log to inspect the structure of the received data
+          console.log('Inspecting data structure:', JSON.stringify(data, null, 2));
+          setProjects(data);
+        })
+        .then(() => {
+          console.log('Projects state after setting data:', projects); // Log state after setting data
+        })
+        .catch(error => {
+          console.error("Could not fetch projects data:", error);
+        });
     };
 
     fetchProjects();
