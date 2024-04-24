@@ -157,6 +157,20 @@ def delete_team_member(member_id):
     db.session.commit()
     return jsonify({}), 204
 
+@app.route('/projects/<int:project_id>/goals/<int:goal_id>/tasks', methods=['POST'])
+def add_task_to_goal(project_id, goal_id):
+    project = Project.query.get(project_id)
+    if not project:
+        return jsonify({'error': 'Project not found'}), 404
+    goal = Goal.query.get(goal_id)
+    if not goal:
+        return jsonify({'error': 'Goal not found'}), 404
+    data = request.get_json()
+    task = Task(name=data['name'], goal_id=goal.id)
+    db.session.add(task)
+    db.session.commit()
+    return jsonify(task.to_dict()), 201
+
 # Add similar CRUD routes for Goals, Tasks, and TeamMembers
 
 with app.app_context():
