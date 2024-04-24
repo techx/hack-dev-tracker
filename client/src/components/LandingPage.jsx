@@ -1,20 +1,14 @@
 import React from 'react';
+import OverallProgress from './OverallProgress';
+import TeamMembers from './TeamMembers';
 
 const LandingPage = () => {
   return (
     <div>
       <h1>Productivity Tracker</h1>
       <p>Welcome to the HackMIT Development Team's Productivity Tracker.</p>
-      {/* Placeholder for overall project progress */}
-      <section>
-        <h2>Overall Project Progress</h2>
-        {/* Placeholder for progress bars */}
-      </section>
-      {/* Placeholder for team member list */}
-      <section>
-        <h2>Team Members</h2>
-        {/* Placeholder for team member management */}
-      </section>
+      <OverallProgress />
+      <TeamMembers />
     </div>
   );
 };
