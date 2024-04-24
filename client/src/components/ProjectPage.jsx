@@ -41,9 +41,25 @@ const ProjectPage = () => {
     }
   }, [project?.progress]); // Added project.progress as a dependency
 
-  const submitTask = (values) => {
-    // Placeholder for submitting the task to the backend
-    console.log(values);
+  const submitTask = async (values) => {
+    try {
+      const response = await axios.post(`http://127.0.0.1:5000/projects/${id}/goals/${values.goalId}/tasks`, {
+        name: values.taskName,
+        description: values.taskDescription,
+        assignee: values.assignee,
+        githubPR: values.githubPR,
+      });
+      console.log('Task added:', response.data);
+      // Update project state to reflect the new task
+      setProject({
+        ...project,
+        goals: project.goals.map(goal => 
+          goal.id === values.goalId ? {...goal, tasks: [...goal.tasks, response.data]} : goal
+        )
+      });
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
   };
 
   if (!project) {
