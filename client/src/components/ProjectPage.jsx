@@ -23,7 +23,6 @@ const ProjectPage = () => {
         const response = await axios.get(`http://127.0.0.1:5000/projects/${id}`);
         console.log('Project data fetched:', response.data); // Added log for fetched data
         setProject(response.data);
-        console.log('Project state after set:', project); // Added log for state after set
       } catch (error) {
         console.error('Error fetching project details:', error);
       }
@@ -40,7 +39,7 @@ const ProjectPage = () => {
         origin: { y: 0.6 }
       });
     }
-  }, [project]);
+  }, [project, project?.progress]); // Added project.progress as a dependency
 
   const submitTask = (values) => {
     // Placeholder for submitting the task to the backend

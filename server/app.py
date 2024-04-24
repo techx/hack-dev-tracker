@@ -31,11 +31,20 @@ class Project(db.Model):
     # Relationships
     goals = db.relationship('Goal', backref='project', lazy=True)
 
+    def calculate_progress(self):
+        total_tasks = 0
+        completed_tasks = 0
+        for goal in self.goals:
+            total_tasks += len(goal.tasks)
+            completed_tasks += sum(1 for task in goal.tasks if task.is_completed)
+        return (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
+
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'description': self.description,
+            'progress': self.calculate_progress(),
             'goals': [goal.to_dict() for goal in self.goals]
         }
 
