@@ -22,9 +22,6 @@ const OverallProgress = () => {
           console.log('Inspecting data structure:', JSON.stringify(data, null, 2));
           setProjects(data);
         })
-        .then(() => {
-          console.log('Projects state after setting data:', projects); // Log state after setting data
-        })
         .catch(error => {
           console.error("Could not fetch projects data:", error);
         });
@@ -34,7 +31,10 @@ const OverallProgress = () => {
   }, []);
 
   useEffect(() => {
-    console.log('Projects state in useEffect after setting data:', projects); // Log state in useEffect after setting data
+    const timeoutId = setTimeout(() => {
+      console.log('Projects state after potential update:', projects);
+    }, 1000);
+    return () => clearTimeout(timeoutId);
   }, [projects]);
 
   return (
