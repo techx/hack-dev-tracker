@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from '@mantine/core';
 import API_URL from '../config';
 
 const TeamMembers = () => {
@@ -24,9 +25,16 @@ const TeamMembers = () => {
     fetchMembers();
   }, []);
 
+  // Function to handle adding a new team member (placeholder for now)
+  const handleAddMember = () => {
+    console.log('Add new team member');
+    // Placeholder function body
+  };
+
   return (
     <div>
       <h2>Team Members</h2>
+      <Button onClick={handleAddMember}>Add Team Member</Button>
       {members.map((member) => (
         <div key={member.id}>
           <h3>{member.name}</h3>

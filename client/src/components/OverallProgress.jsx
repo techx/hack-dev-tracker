@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Progress } from '@mantine/core';
+import { Progress, Button } from '@mantine/core';
 import API_URL from '../config';
 
 const OverallProgress = () => {
@@ -32,6 +32,12 @@ const OverallProgress = () => {
   // Additional log to inspect the projects state before rendering
   console.log('Projects state before rendering:', projects);
 
+  // Function to handle adding a new task (placeholder for now)
+  const handleAddTask = (projectId) => {
+    console.log(`Add task for project with ID: ${projectId}`);
+    // Placeholder function body
+  };
+
   return (
     <div>
       <h2>Overall Project Progress</h2>
@@ -39,6 +45,7 @@ const OverallProgress = () => {
         <div key={project.id}>
           <h3>{project.name}</h3>
           <Progress value={project.completion} label={`${Math.round(project.completion)}%`} />
+          <Button onClick={() => handleAddTask(project.id)}>Add Task</Button>
         </div>
       )) : <p>Loading project progress...</p>}
     </div>
