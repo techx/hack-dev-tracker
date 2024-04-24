@@ -21,7 +21,7 @@ const ProjectsList = () => {
     fetchProjects();
   }, []);
 
-  const handleAddTaskClick = (projectId, goalId) => { // Modified to accept goalId
+  const handleAddTaskClick = (projectId, goalId) => {
     setSelectedProjectId(projectId);
     setSelectedGoalId(goalId); // Set the selected goal ID
     setShowAddTask(true);
@@ -29,7 +29,7 @@ const ProjectsList = () => {
 
   const handleAddTaskSubmit = async () => {
     try {
-      const response = await axios.post(`https://b4ab214f2633.ngrok.app/projects/${selectedProjectId}/goals/${selectedGoalId}/tasks`, { // Modified URL to include goalId
+      const response = await axios.post(`https://b4ab214f2633.ngrok.app/projects/${selectedProjectId}/goals/${selectedGoalId}/tasks`, {
         name: newTaskName,
       });
       // Refresh the projects list to show the new task
@@ -53,11 +53,11 @@ const ProjectsList = () => {
         {projects.map((project) => (
           <li key={project.id}>
             {project.name}
-            {project.goals.map((goal) => ( // Render each goal with an Add Task button
+            {project.goals.map((goal) => (
               <div key={goal.id}>
                 {goal.name}
-                <button onClick={() => handleAddTaskClick(project.id, goal.id)}>Add Task</button> // Pass goal.id to the click handler
-                {showAddTask && selectedProjectId === project.id && selectedGoalId === goal.id && ( // Check if the selected goal matches
+                <button onClick={() => handleAddTaskClick(project.id, goal.id)}>Add Task</button>
+                {showAddTask && selectedProjectId === project.id && selectedGoalId === goal.id && (
                   <div>
                     <input
                       type="text"
