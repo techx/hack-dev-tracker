@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { TextInput, Button, Textarea, Progress, Box, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import axios from 'axios';
+import confetti from 'canvas-confetti';
 
 const ProjectPage = () => {
   let { id } = useParams();
@@ -19,14 +21,26 @@ const ProjectPage = () => {
     const fetchProject = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:5000/projects/${id}`);
+        console.log('Project data fetched:', response.data); // Added log for fetched data
         setProject(response.data);
+        console.log('Project state after set:', project); // Added log for state after set
       } catch (error) {
         console.error('Error fetching project details:', error);
       }
     };
 
     fetchProject();
-  }, [id]);
+  }, [id]); // Added ID as a dependency to re-fetch when ID changes
+
+  useEffect(() => {
+    if (project && project.progress === 100) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+  }, [project]);
 
   const submitTask = (values) => {
     // Placeholder for submitting the task to the backend
@@ -38,36 +52,36 @@ const ProjectPage = () => {
   }
 
   return (
-    <div>
+    <Box>
       <h1>Project Details</h1>
       <p>This is the page for project with ID: {id}</p>
       <section>
         <h2>Project Progress</h2>
         {/* Render project progress bar here */}
+        <Progress value={project.progress} />
       </section>
       <section>
         <h2>Add New Task</h2>
         <form onSubmit={form.onSubmit((values) => submitTask(values))}>
-          <input
-            type="text"
+          <TextInput
             placeholder="Task Name"
             {...form.getInputProps('taskName')}
           />
-          <textarea
+          <Textarea
             placeholder="Task Description"
             {...form.getInputProps('taskDescription')}
           />
-          <input
-            type="text"
+          <TextInput
             placeholder="Assignee"
             {...form.getInputProps('assignee')}
           />
-          <input
-            type="text"
+          <TextInput
             placeholder="GitHub PR Link"
             {...form.getInputProps('githubPR')}
           />
-          <button type="submit">Add Task</button>
+          <Group position="right" mt="md">
+            <Button type="submit">Add Task</Button>
+          </Group>
         </form>
       </section>
       <section>
@@ -77,6 +91,7 @@ const ProjectPage = () => {
             <li key={goal.id}>
               {goal.name}
               {/* Render goal progress bar here */}
+              <Progress value={goal.progress} />
               <ul>
                 {goal.tasks.map((task) => (
                   <li key={task.id}>{task.name}</li>
@@ -94,7 +109,7 @@ const ProjectPage = () => {
         <h2>Team Members</h2>
         {/* Render team members here */}
       </section>
-    </div>
+    </Box>
   );
 };
 
