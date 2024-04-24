@@ -58,7 +58,7 @@ const ProjectPage = () => {
       <section>
         <h2>Project Progress</h2>
         {/* Render project progress bar here */}
-        <Progress value={project.progress} label={`${project.progress}%`} />
+        <Progress value={project.progress} label={`${project.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0' }} />
       </section>
       <section>
         <h2>Add New Task</h2>
@@ -91,7 +91,7 @@ const ProjectPage = () => {
             <li key={goal.id}>
               {goal.name}
               {/* Render goal progress bar here */}
-              <Progress value={goal.progress} label={`${goal.progress}%`} />
+              <Progress value={goal.progress} label={`${goal.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0' }} />
               <ul>
                 {goal.tasks.map((task) => (
                   <li key={task.id}>{task.name}</li>
