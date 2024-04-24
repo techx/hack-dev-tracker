@@ -19,6 +19,7 @@ const OverallProgress = () => {
           const averageProgress = project.goals.length > 0 ? totalProgress / project.goals.length : 0;
           return { ...project, completion: averageProgress };
         });
+        console.log('Projects with overall progress:', projectsWithOverallProgress); // Added log to inspect the projectsWithOverallProgress
         setProjects(projectsWithOverallProgress);
       } catch (error) {
         console.error("Could not fetch projects data:", error);
