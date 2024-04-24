@@ -6,36 +6,27 @@ const OverallProgress = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    console.log('Initial projects state:', projects); // Log initial state
-    const fetchProjects = () => {
-      console.log('Fetching projects data from backend');
-      fetch(`${API_URL}/projects`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Data received from backend:', data);
-          // Additional log to inspect the structure of the received data
-          console.log('Inspecting data structure:', JSON.stringify(data, null, 2));
-          setProjects(data);
-        })
-        .catch(error => {
-          console.error("Could not fetch projects data:", error);
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${API_URL}/projects`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        // Calculate overall progress for each project
+        const projectsWithOverallProgress = data.map(project => {
+          const totalProgress = project.goals.reduce((acc, goal) => acc + goal.progress, 0);
+          const averageProgress = project.goals.length > 0 ? totalProgress / project.goals.length : 0;
+          return { ...project, completion: averageProgress };
         });
+        setProjects(projectsWithOverallProgress);
+      } catch (error) {
+        console.error("Could not fetch projects data:", error);
+      }
     };
 
     fetchProjects();
   }, []);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      console.log('Projects state after potential update:', projects);
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [projects]);
 
   return (
     <div>
@@ -43,7 +34,7 @@ const OverallProgress = () => {
       {projects.map((project) => (
         <div key={project.id}>
           <h3>{project.name}</h3>
-          <Progress value={project.completion} label={`${project.completion}%`} />
+          <Progress value={project.completion} label={`${Math.round(project.completion)}%`} />
         </div>
       ))}
     </div>
