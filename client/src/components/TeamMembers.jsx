@@ -12,6 +12,9 @@ const TeamMembers = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log('Data received from backend for team members:', data);
+        // Additional log to inspect the structure of the received data
+        console.log('Inspecting team members data structure:', JSON.stringify(data, null, 2));
         setMembers(data);
       } catch (error) {
         console.error("Could not fetch team members data:", error);
@@ -28,12 +31,12 @@ const TeamMembers = () => {
         <div key={member.id}>
           <h3>{member.name}</h3>
           <ul>
-            {member.projects && Array.isArray(member.projects) ? (
-              member.projects.map((project, index) => (
-                <li key={index}>{project.name}</li>
+            {member.tasks && Array.isArray(member.tasks) ? (
+              member.tasks.map((task, index) => (
+                <li key={index}>{task.name}</li>
               ))
             ) : (
-              <li>No projects assigned</li>
+              <li>No tasks assigned</li>
             )}
           </ul>
         </div>

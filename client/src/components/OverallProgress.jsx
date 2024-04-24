@@ -15,6 +15,8 @@ const OverallProgress = () => {
         }
         const data = await response.json();
         console.log('Data received from backend:', data);
+        // Additional log to inspect the structure of the received data
+        console.log('Inspecting data structure:', JSON.stringify(data, null, 2));
         setProjects(data);
       } catch (error) {
         console.error("Could not fetch projects data:", error);
