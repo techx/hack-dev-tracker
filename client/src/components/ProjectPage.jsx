@@ -60,7 +60,7 @@ const ProjectPage = () => {
         <h2>Project Progress</h2>
         {/* Render project progress bar here */}
         {project.progress !== undefined && (
-          <Progress value={project.progress} label={`${project.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px' }} />
+          <Progress value={project.progress} label={`${project.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px', border: '1px solid #000' }} />
         )}
       </section>
       <section>
@@ -95,7 +95,7 @@ const ProjectPage = () => {
               {goal.name}
               {/* Render goal progress bar here */}
               {goal.progress !== undefined && (
-                <Progress value={goal.progress} label={`${goal.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px' }} />
+                <Progress value={goal.progress} label={`${goal.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px', border: '1px solid #000' }} />
               )}
               <ul>
                 {goal.tasks.map((task) => (
