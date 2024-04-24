@@ -16,7 +16,6 @@ const OverallProgress = () => {
         const data = await response.json();
         console.log('Data received from backend:', data);
         setProjects(data);
-        console.log('Projects state after setting data:', projects);
       } catch (error) {
         console.error("Could not fetch projects data:", error);
       }
@@ -24,6 +23,10 @@ const OverallProgress = () => {
 
     fetchProjects();
   }, []);
+
+  useEffect(() => {
+    console.log('Projects state after setting data:', projects);
+  }, [projects]);
 
   return (
     <div>
