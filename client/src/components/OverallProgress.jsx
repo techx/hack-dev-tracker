@@ -35,12 +35,12 @@ const OverallProgress = () => {
   return (
     <div>
       <h2>Overall Project Progress</h2>
-      {projects.map((project) => (
+      {projects.length > 0 ? projects.map((project) => (
         <div key={project.id}>
           <h3>{project.name}</h3>
           <Progress value={project.completion} label={`${Math.round(project.completion)}%`} />
         </div>
-      ))}
+      )) : <p>Loading project progress...</p>}
     </div>
   );
 };
