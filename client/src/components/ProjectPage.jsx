@@ -23,7 +23,7 @@ const ProjectPage = () => {
         const response = await axios.get(`http://127.0.0.1:5000/projects/${id}`);
         console.log('Project data fetched:', response.data); // Added log for fetched data
         setProject(response.data);
-        console.log('Project state after set:', response.data); // Added log to check state after set
+        console.log('Project state after set:', project); // Log to check state after set
       } catch (error) {
         console.error('Error fetching project details:', error);
       }
@@ -40,7 +40,7 @@ const ProjectPage = () => {
         origin: { y: 0.6 }
       });
     }
-  }, [project, project?.progress]); // Added project.progress as a dependency
+  }, [project]); // Removed project?.progress from the dependency array
 
   const submitTask = (values) => {
     // Placeholder for submitting the task to the backend
@@ -51,6 +51,8 @@ const ProjectPage = () => {
     return <div>Loading project details...</div>;
   }
 
+  console.log('Rendering project with state:', project); // Log to check state during render
+
   return (
     <Box>
       <h1>Project Details</h1>
@@ -58,7 +60,9 @@ const ProjectPage = () => {
       <section>
         <h2>Project Progress</h2>
         {/* Render project progress bar here */}
-        <Progress value={project.progress} label={`${project.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px' }} />
+        {project.progress !== undefined && (
+          <Progress value={project.progress} label={`${project.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px' }} />
+        )}
       </section>
       <section>
         <h2>Add New Task</h2>
@@ -91,7 +95,9 @@ const ProjectPage = () => {
             <li key={goal.id}>
               {goal.name}
               {/* Render goal progress bar here */}
-              <Progress value={goal.progress} label={`${goal.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px' }} />
+              {goal.progress !== undefined && (
+                <Progress value={goal.progress} label={`${goal.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px' }} />
+              )}
               <ul>
                 {goal.tasks.map((task) => (
                   <li key={task.id}>{task.name}</li>
