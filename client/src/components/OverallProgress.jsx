@@ -32,7 +32,7 @@ const OverallProgress = () => {
     if (!isDataFetched) {
       fetchProjects();
     }
-  }, [isDataFetched]);
+  }, [isDataFetched]); // Removed projects from the dependency array to prevent re-fetching on every render
 
   useEffect(() => {
     // Check if any project has reached 100% completion and trigger confetti
@@ -45,7 +45,7 @@ const OverallProgress = () => {
         });
       }
     });
-  }, [projects]);
+  }, [projects]); // Added projects to the dependency array to trigger re-render when projects state changes
 
   // Additional log to inspect the projects state before rendering
   console.log('Projects state before rendering:', projects);
@@ -59,6 +59,12 @@ const OverallProgress = () => {
   // Debugging: Log each project's completion value before rendering the Progress component
   projects.forEach(project => {
     console.log(`Rendering progress for project "${project.name}" with completion: ${project.completion}%`);
+    // Check if the Progress component should render
+    if (project.completion !== undefined) {
+      console.log(`Progress component should render for project "${project.name}" with completion: ${project.completion}%`);
+    } else {
+      console.error(`Progress component cannot render for project "${project.name}" because completion is undefined`);
+    }
   });
 
   // Debugging: Log the response status and data after fetching
@@ -66,13 +72,16 @@ const OverallProgress = () => {
     console.log('Fetched projects data:', projects);
   }, [projects]);
 
+  // Additional debugging: Log the projects array immediately before rendering
+  console.log('Projects array just before rendering:', projects);
+
   return (
     <div>
       <h2>Overall Project Progress</h2>
       {projects.length > 0 ? projects.map((project) => (
-        <div key={project.id}>
+        <div key={project.id} style={{ marginBottom: '20px' }}>
           <h3>{project.name}</h3>
-          <Progress value={project.completion} label={`${Math.round(project.completion)}%`} color={project.completion > 0 ? 'blue' : 'gray'} styles={{ bar: { minWidth: project.completion > 0 ? '0%' : '10%' } }} />
+          <Progress value={project.completion} label={`${Math.round(project.completion)}%`} color={project.completion > 0 ? 'blue' : 'gray'} styles={{ bar: { minWidth: project.completion > 0 ? '0%' : '10%', height: '20px' } }} />
           <Button onClick={() => handleAddTask(project.id)}>Add Task</Button>
         </div>
       )) : <p>Loading project progress...</p>}
