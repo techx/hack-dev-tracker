@@ -8,8 +8,20 @@ const OverallProgress = ({ projects }) => {
   useEffect(() => {
     console.log('Projects data:', projects); // Log to check the projects data
     if (projects && projects.length > 0) {
+      // Log each project's completion value
+      projects.forEach(project => {
+        console.log(`Project: ${project.name}, Completion: ${project.completion}`);
+      });
+
       // Calculate the overall progress based on the completion of each project
-      const totalCompletion = projects.reduce((total, project) => total + project.completion, 0);
+      const totalCompletion = projects.reduce((total, project) => {
+        if (typeof project.completion === 'number') {
+          return total + project.completion;
+        } else {
+          console.error(`Invalid completion value for project: ${project.name}`);
+          return total;
+        }
+      }, 0);
       const progress = totalCompletion / projects.length;
       setOverallProgress(progress);
       console.log('Calculated overall progress:', progress); // Log to check the calculated progress
