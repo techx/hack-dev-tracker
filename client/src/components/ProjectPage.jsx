@@ -1,31 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { TextInput, Button, Textarea, Progress, Box, Group, Select } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import axios from 'axios';
-import confetti from 'canvas-confetti';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import {
+  TextInput,
+  Button,
+  Textarea,
+  Progress,
+  Box,
+  Group,
+  Select,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import axios from "axios";
+import confetti from "canvas-confetti";
+import API_URL from "../config";
 
 const ProjectPage = () => {
   let { id } = useParams();
   const [project, setProject] = useState(null);
   const form = useForm({
     initialValues: {
-      taskName: '',
-      taskDescription: '',
-      assignee: '',
-      githubPR: '',
-      goalId: '',
+      taskName: "",
+      taskDescription: "",
+      assignee: "",
+      githubPR: "",
+      goalId: "",
     },
   });
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/projects/${id}`);
-        console.log('Project data fetched:', response.data); // Added log for fetched data
+        const response = await axios.get(`${API_URL}/projects/${id}`);
+        console.log("Project data fetched:", response.data); // Added log for fetched data
         setProject(response.data);
       } catch (error) {
-        console.error('Error fetching project details:', error);
+        console.error("Error fetching project details:", error);
       }
     };
 
@@ -37,29 +46,34 @@ const ProjectPage = () => {
       confetti({
         particleCount: 100,
         spread: 70,
-        origin: { y: 0.6 }
+        origin: { y: 0.6 },
       });
     }
   }, [project?.progress]); // Added project.progress as a dependency
 
   const submitTask = async (values) => {
     try {
-      const response = await axios.post(`http://127.0.0.1:5000/projects/${id}/goals/${values.goalId}/tasks`, {
-        name: values.taskName,
-        description: values.taskDescription,
-        assignee: values.assignee,
-        githubPR: values.githubPR,
-      });
-      console.log('Task added:', response.data);
+      const response = await axios.post(
+        `http://127.0.0.1:5000/projects/${id}/goals/${values.goalId}/tasks`,
+        {
+          name: values.taskName,
+          description: values.taskDescription,
+          assignee: values.assignee,
+          githubPR: values.githubPR,
+        }
+      );
+      console.log("Task added:", response.data);
       // Update project state to reflect the new task
       setProject({
         ...project,
-        goals: project.goals.map(goal =>
-          goal.id === values.goalId ? {...goal, tasks: [...goal.tasks, response.data]} : goal
-        )
+        goals: project.goals.map((goal) =>
+          goal.id === values.goalId
+            ? { ...goal, tasks: [...goal.tasks, response.data] }
+            : goal
+        ),
       });
     } catch (error) {
-      console.error('Error adding task:', error);
+      console.error("Error adding task:", error);
     }
   };
 
@@ -67,7 +81,7 @@ const ProjectPage = () => {
     return <div>Loading project details...</div>;
   }
 
-  console.log('Rendering project with state:', project); // Log to check state during render
+  console.log("Rendering project with state:", project); // Log to check state during render
 
   return (
     <Box>
@@ -77,34 +91,47 @@ const ProjectPage = () => {
         <h2>Project Progress</h2>
         {/* Render project progress bar here */}
         {project.progress !== undefined && (
-          <Progress value={project.progress} label={`${project.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px', border: '1px solid #000' }} />
+          <Progress
+            value={project.progress}
+            label={`${project.progress}%`}
+            style={{
+              height: "20px",
+              backgroundColor: "#f0f0f0",
+              minWidth: "50px",
+              border: "1px solid #000",
+            }}
+          />
         )}
       </section>
       <section>
         <h2>Add New Task</h2>
         <form onSubmit={form.onSubmit((values) => submitTask(values))}>
-          {console.log('Project goals:', project.goals)}
+          {console.log("Project goals:", project.goals)}
           <Select
             label="Goal"
             placeholder="Select a goal"
-            data={project.goals.map((goal) => ({ value: goal.id.toString(), label: goal.name, key: goal.id }))}
-            {...form.getInputProps('goalId')}
+            data={project.goals.map((goal) => ({
+              value: goal.id.toString(),
+              label: goal.name,
+              key: goal.id,
+            }))}
+            {...form.getInputProps("goalId")}
           />
           <TextInput
             placeholder="Task Name"
-            {...form.getInputProps('taskName')}
+            {...form.getInputProps("taskName")}
           />
           <Textarea
             placeholder="Task Description"
-            {...form.getInputProps('taskDescription')}
+            {...form.getInputProps("taskDescription")}
           />
           <TextInput
             placeholder="Assignee"
-            {...form.getInputProps('assignee')}
+            {...form.getInputProps("assignee")}
           />
           <TextInput
             placeholder="GitHub PR Link"
-            {...form.getInputProps('githubPR')}
+            {...form.getInputProps("githubPR")}
           />
           <Group position="right" mt="md">
             <Button type="submit">Add Task</Button>
@@ -119,7 +146,16 @@ const ProjectPage = () => {
               {goal.name}
               {/* Render goal progress bar here */}
               {goal.progress !== undefined && (
-                <Progress value={goal.progress} label={`${goal.progress}%`} style={{ height: '20px', backgroundColor: '#f0f0f0', minWidth: '50px', border: '1px solid #000' }} />
+                <Progress
+                  value={goal.progress}
+                  label={`${goal.progress}%`}
+                  style={{
+                    height: "20px",
+                    backgroundColor: "#f0f0f0",
+                    minWidth: "50px",
+                    border: "1px solid #000",
+                  }}
+                />
               )}
               <ul>
                 {goal.tasks.map((task) => (
