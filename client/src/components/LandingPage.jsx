@@ -17,6 +17,7 @@ const LandingPage = () => {
     const fetchProjects = async () => {
       try {
         const response = await axios.get(`${API_URL}/projects`);
+        console.log('Fetched projects:', response.data); // Added log to check fetched projects
         setProjects(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -33,6 +34,7 @@ const LandingPage = () => {
       // Ensure the progress value is set to 0 for new projects
       const completeProjectData = { ...projectData, progress: 0 };
       const response = await axios.post(`${API_URL}/projects`, completeProjectData);
+      console.log('Created project:', response.data); // Added log to check created project
       setProjects([...projects, response.data]); // Update local state with the response from the server
       setProjectModalOpen(false); // Close modal
     } catch (error) {
