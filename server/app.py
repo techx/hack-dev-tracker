@@ -37,7 +37,9 @@ class Project(db.Model):
         for goal in self.goals:
             total_tasks += len(goal.tasks)
             completed_tasks += sum(1 for task in goal.tasks if task.is_completed)
-        return (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
+        progress = (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
+        print(f"Total tasks: {total_tasks}, Completed tasks: {completed_tasks}, Progress: {progress}")
+        return progress
 
     def to_dict(self):
         return {
