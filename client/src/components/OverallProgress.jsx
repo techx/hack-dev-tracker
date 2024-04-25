@@ -5,6 +5,7 @@ import API_URL from '../config';
 
 const OverallProgress = () => {
   const [projects, setProjects] = useState([]);
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -22,13 +23,16 @@ const OverallProgress = () => {
         });
         console.log('Projects with overall progress:', projectsWithOverallProgress); // Added log to inspect the projectsWithOverallProgress
         setProjects(projectsWithOverallProgress);
+        setIsDataFetched(true);
       } catch (error) {
         console.error("Could not fetch projects data:", error);
       }
     };
 
-    fetchProjects();
-  }, []);
+    if (!isDataFetched) {
+      fetchProjects();
+    }
+  }, [isDataFetched]);
 
   useEffect(() => {
     // Check if any project has reached 100% completion and trigger confetti
