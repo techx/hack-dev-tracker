@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 # Load environment variables
 load_dotenv()
@@ -23,7 +24,7 @@ def after_request(response):
 # Use the environment variable for the database URI
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
 
 class Project(db.Model):
     __tablename__ = "projects"
@@ -31,6 +32,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    progress = db.Column(db.Integer, nullable=False, default=0)
     # Relationships
     goals = db.relationship("Goal", backref="project", lazy=True)
 
@@ -127,7 +129,7 @@ def get_project(project_id):
 @app.route("/projects", methods=["POST"])
 def create_project():
     data = request.get_json()
-    project = Project(name=data["name"], description=data["description"])
+    project = Project(name=data["name"], description=data["description"], progress=0)
     db.session.add(project)
     db.session.commit()
     return jsonify(project.to_dict()), 201
