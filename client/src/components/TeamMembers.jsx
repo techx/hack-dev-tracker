@@ -13,9 +13,6 @@ const TeamMembers = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Data received from backend for team members:', data);
-        // Additional log to inspect the structure of the received data
-        console.log('Inspecting team members data structure:', JSON.stringify(data, null, 2));
         setMembers(data);
       } catch (error) {
         console.error("Could not fetch team members data:", error);
@@ -27,7 +24,6 @@ const TeamMembers = () => {
 
   // Function to handle adding a new team member (placeholder for now)
   const handleAddMember = () => {
-    console.log('Add new team member');
     // Placeholder function body
   };
 

@@ -54,7 +54,7 @@ const ProjectPage = () => {
       // Update project state to reflect the new task
       setProject({
         ...project,
-        goals: project.goals.map(goal => 
+        goals: project.goals.map(goal =>
           goal.id === values.goalId ? {...goal, tasks: [...goal.tasks, response.data]} : goal
         )
       });
@@ -83,10 +83,11 @@ const ProjectPage = () => {
       <section>
         <h2>Add New Task</h2>
         <form onSubmit={form.onSubmit((values) => submitTask(values))}>
+          {console.log('Project goals:', project.goals)}
           <Select
             label="Goal"
             placeholder="Select a goal"
-            data={project.goals.map((goal) => ({ value: goal.id.toString(), label: goal.name }))}
+            data={project.goals.map((goal) => ({ value: goal.id.toString(), label: goal.name, key: goal.id }))}
             {...form.getInputProps('goalId')}
           />
           <TextInput
