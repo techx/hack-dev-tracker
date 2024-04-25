@@ -68,7 +68,7 @@ const OverallProgress = () => {
       {projects.length > 0 ? projects.map((project) => (
         <div key={project.id}>
           <h3>{project.name}</h3>
-          <Progress value={project.completion} label={`${Math.round(project.completion)}%`} color={project.completion > 0 ? 'blue' : 'gray'} styles={{ bar: { minWidth: project.completion > 0 ? '0%' : '2%' } }} />
+          <Progress value={project.completion} label={`${Math.round(project.completion)}%`} color={project.completion > 0 ? 'blue' : 'gray'} styles={{ bar: { minWidth: project.completion > 0 ? '0%' : '10%' } }} />
           <Button onClick={() => handleAddTask(project.id)}>Add Task</Button>
         </div>
       )) : <p>Loading project progress...</p>}
