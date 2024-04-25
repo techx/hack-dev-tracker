@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Progress, Button } from '@mantine/core';
+import confetti from 'canvas-confetti';
 import API_URL from '../config';
 
 const OverallProgress = () => {
@@ -29,6 +30,19 @@ const OverallProgress = () => {
     fetchProjects();
   }, []);
 
+  useEffect(() => {
+    // Check if any project has reached 100% completion and trigger confetti
+    projects.forEach(project => {
+      if (project.completion === 100) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    });
+  }, [projects]);
+
   // Additional log to inspect the projects state before rendering
   console.log('Projects state before rendering:', projects);
 
@@ -37,6 +51,11 @@ const OverallProgress = () => {
     console.log(`Add task for project with ID: ${projectId}`);
     // Placeholder function body
   };
+
+  // Debugging: Log each project's completion value before rendering the Progress component
+  projects.forEach(project => {
+    console.log(`Rendering progress for project "${project.name}" with completion: ${project.completion}%`);
+  });
 
   return (
     <div>
