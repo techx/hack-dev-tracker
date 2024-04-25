@@ -16,6 +16,8 @@ const OverallProgress = () => {
         }
         const data = await response.json();
         console.log('API response data:', data); // Log to check the API response data
+        // Log the raw data from the API before processing
+        console.log('Raw data from API:', data);
         // Calculate overall progress for each project
         const projectsWithOverallProgress = data.map(project => {
           const totalProgress = project.goals.reduce((acc, goal) => acc + goal.progress, 0);
