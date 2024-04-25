@@ -34,9 +34,9 @@ const OverallProgress = ({ projects }) => {
     <div>
       <h2>Overall Project Progress</h2>
       {projects && projects.length > 0 ? (
-        <Progress value={overallProgress} label={`${overallProgress}%`} color="blue" styles={{ bar: { minWidth: '10%', height: '20px', backgroundColor: '#0074D9', border: '1px solid #999' } }} />
+        <Progress value={overallProgress} label={`${overallProgress}%`} color="blue" styles={{ bar: { minWidth: '10%', height: '30px', backgroundColor: '#0074D9', border: '1px solid #999' } }} />
       ) : (
-        <Progress value={0} label="0%" color="blue" styles={{ bar: { minWidth: '10%', height: '20px', backgroundColor: '#0074D9', border: '1px solid #999' } }} />
+        <Progress value={0} label="0%" color="blue" styles={{ bar: { minWidth: '10%', height: '30px', backgroundColor: '#0074D9', border: '1px solid #999' } }} />
       )}
     </div>
   );
