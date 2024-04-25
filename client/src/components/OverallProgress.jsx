@@ -57,6 +57,11 @@ const OverallProgress = () => {
     console.log(`Rendering progress for project "${project.name}" with completion: ${project.completion}%`);
   });
 
+  // Debugging: Log the response status and data after fetching
+  useEffect(() => {
+    console.log('Fetched projects data:', projects);
+  }, [projects]);
+
   return (
     <div>
       <h2>Overall Project Progress</h2>
