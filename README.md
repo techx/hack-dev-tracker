@@ -9,6 +9,8 @@ The HackMIT Development Tracker is a web application designed to track the progr
 - Attach GitHub PRs and issues to tasks and goals.
 - Add and manage team members across projects.
 - Persist application state in a Postgres database.
+- Add projects and team members from the landing page.
+- Confetti animation when a progress bar reaches 100%.
 
 ## Getting Started
 
@@ -40,7 +42,7 @@ pip install -r requirements.txt
 ```
 
 ### Database Setup
-Ensure PostgreSQL is running and create a database for the application.
+Ensure PostgreSQL is running and create a database for the application. Initialize the database schema using the provided schema.sql file.
 
 ### Environment Variables
 Set up the `.env` files in both the `client` and `server` directories with the following variables:
@@ -62,7 +64,7 @@ SQLALCHEMY_DATABASE_URI=postgresql://postgres:SecurePassword123!@localhost/hack_
 cd client
 npm start
 ```
-The client will be available at `http://localhost:3003`.
+The client will be available at `http://localhost:3000`.
 
 #### Server
 ```bash
@@ -76,6 +78,12 @@ The server will run on `http://localhost:5000`.
 - `server`: Flask backend application.
 - `server/models.py`: Database models.
 - `server/routes.py`: API routes.
+
+## Usage
+Navigate to `http://localhost:3000` to access the landing page. From there, you can:
+- Add new projects and team members using the provided forms.
+- Click into individual project pages to manage goals, tasks, and team member assignments.
+- View overall progress for each project on the landing page.
 
 ## Testing
 To run tests, navigate to the respective directory and use the test command:

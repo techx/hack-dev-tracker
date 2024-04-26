@@ -11,7 +11,7 @@ const OverallProgress = ({ projects }) => {
         if (typeof project.progress === 'number') {
           return total + project.progress;
         } else {
-          console.error(`Invalid progress value for project: ${project.name}`);
+          // Invalid progress value for project should be handled appropriately
           return total;
         }
       }, 0);
