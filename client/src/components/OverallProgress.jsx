@@ -11,7 +11,7 @@ const OverallProgress = ({ projects }) => {
         if (typeof project.progress === 'number') {
           return total + project.progress;
         } else {
-          console.error(`Invalid progress value for project: ${project.name}`);
+          // Invalid progress value for project should be handled appropriately
           return total;
         }
       }, 0);
@@ -34,9 +34,9 @@ const OverallProgress = ({ projects }) => {
     <div>
       <h2>Overall Project Progress</h2>
       {projects && projects.length > 0 ? (
-        <Progress value={overallProgress} label={`${overallProgress}%`} color="blue" styles={{ bar: { minWidth: '50%', height: '20px' } }} />
+        <Progress value={overallProgress} label={`${overallProgress}%`} color="blue" styles={{ bar: { minWidth: '10%', height: '30px', backgroundColor: '#0074D9', border: '1px solid #999' } }} />
       ) : (
-        <Progress value={0} label="0%" color="blue" styles={{ bar: { minWidth: '50%', height: '20px' } }} />
+        <Progress value={0} label="0%" color="blue" styles={{ bar: { minWidth: '10%', height: '30px', backgroundColor: '#0074D9', border: '1px solid #999' } }} />
       )}
     </div>
   );
